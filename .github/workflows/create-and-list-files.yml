@@ -1,0 +1,20 @@
+name: Create and List Files
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-and-list:
+    runs-on: self-hosted  # Runs on your self-hosted runner
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v2
+
+      - name: Create a new file
+        run: echo "This is a new file created by the GitHub Actions workflow" > new-file.txt
+
+      - name: List all files
+        run: ls -la
