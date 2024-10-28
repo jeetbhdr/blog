@@ -1,0 +1,23 @@
+name: Comment on Issue
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  comment_job:
+    runs-on: [self-hosted]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Add comment on issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_NUMBER=$(jq --raw-output '.issue.number' "$GITHUB_EVENT_PATH")
+          curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments \
+          -d '{"body": "Thank you for opening an issue! We will review it shortly."}'
